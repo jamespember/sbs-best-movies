@@ -1,0 +1,16 @@
+{
+  "name": "sbs-best-movies",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "sync": "node server.mjs --sync-only",
+    "enrich": "node server.mjs --enrich-only",
+    "validate": "node server.mjs --validate-only",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

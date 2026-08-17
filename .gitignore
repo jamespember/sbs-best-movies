@@ -1,0 +1,4 @@
+.env
+data/catalog.json
+data/catalog.json.tmp
+node_modules/

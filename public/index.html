@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The best movies currently streaming free on SBS On Demand, ranked by audience score.">
+    <title>SBS Best Movies</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="masthead">
+      <a class="wordmark" href="/">Find great movies to stream for free on SBS On Demand (Australia)</a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="controls">
+          <label class="search-control">
+            <span>Find a film</span>
+            <input id="search" type="search" placeholder="Title or genre" autocomplete="off">
+          </label>
+          <label>
+            <span>Minimum rating</span>
+            <select id="rating">
+              <option value="0">All shortlisted</option>
+              <option value="6">6.0+</option>
+              <option value="7" selected>7.0+</option>
+              <option value="8">8.0+</option>
+            </select>
+          </label>
+          <label>
+            <span>Genre</span>
+            <select id="genre">
+              <option value="">All genres</option>
+            </select>
+          </label>
+          <label>
+            <span>Decade</span>
+            <select id="decade">
+              <option value="">Any decade</option>
+            </select>
+          </label>
+          <label>
+            <span>Runtime</span>
+            <select id="runtime">
+              <option value="">Any length</option>
+              <option value="90">Under 90 min</option>
+              <option value="120">Under 2 hours</option>
+              <option value="150">Under 2.5 hours</option>
+            </select>
+          </label>
+          <label>
+            <span>Sort by</span>
+            <select id="sort">
+              <option value="audience">Audience rating</option>
+              <option value="critics">Critic score</option>
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="title">Title A–Z</option>
+              <option value="runtime">Shortest first</option>
+              <option value="imdb">IMDb rating · 2020</option>
+            </select>
+          </label>
+          <label class="check-control">
+            <input id="imdb-top" type="checkbox">
+            <span>IMDb Top 100 only</span>
+          </label>
+          <button id="lucky" class="control-button lucky-button" type="button">I'm feeling lucky</button>
+          <button id="reset" class="control-button" type="button">Reset filters</button>
+        </div>
+      </section>
+
+      <section aria-labelledby="list-title">
+        <div class="list-heading">
+          <h2 id="list-title">The list</h2>
+          <p id="summary" aria-live="polite">Loading the catalogue...</p>
+        </div>
+        <ol id="movies" class="movie-list"></ol>
+        <div id="empty" class="empty" hidden>No films match those filters.</div>
+      </section>
+    </main>
+
+    <dialog id="lucky-modal">
+      <div class="modal-topline">
+        <span>Tonight's lucky dip</span>
+        <form method="dialog"><button class="close-button" aria-label="Close">Close</button></form>
+      </div>
+      <div class="modal-score"><strong></strong><span>Watchmode</span></div>
+      <p class="modal-kicker"></p>
+      <h2 class="modal-title"></h2>
+      <p class="modal-meta"></p>
+      <p class="modal-plot"></p>
+      <div class="modal-actions">
+        <a class="modal-watch" target="_blank" rel="noopener noreferrer">Watch free on SBS ↗</a>
+        <button id="lucky-again" type="button">Try another</button>
+      </div>
+    </dialog>
+
+    <footer>
+      <p id="updated"></p>
+      <p>Availability data supplied by Watchmode. Ratings are aggregated audience scores, not IMDb ratings.</p>
+    </footer>
+
+    <template id="movie-template">
+      <li class="movie">
+        <span class="rank"></span>
+        <div class="movie-copy">
+          <div class="title-line">
+            <h3></h3>
+            <span class="year"></span>
+          </div>
+          <p class="meta"></p>
+          <p class="accolade" hidden></p>
+          <p class="plot"></p>
+          <div class="links">
+            <a class="watch" target="_blank" rel="noopener noreferrer">Watch free on SBS ↗</a>
+            <a class="imdb" target="_blank" rel="noopener noreferrer">View on IMDb ↗</a>
+          </div>
+        </div>
+        <div class="scores">
+          <div class="score audience-score">
+            <strong></strong>
+            <span>Watchmode</span>
+          </div>
+          <div class="score imdb-score" hidden>
+            <strong></strong>
+            <span>IMDb · 2020</span>
+          </div>
+        </div>
+      </li>
+    </template>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
