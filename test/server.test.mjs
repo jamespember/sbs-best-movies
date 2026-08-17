@@ -19,6 +19,7 @@ test("toMovie maps ranking fields and preserves list fallbacks", () => {
       sbsMediaId: null,
       sbsUrl: null,
       sbsExpiresAt: null,
+      languages: [],
       userRating: 8.2,
       criticScore: 91,
       runtimeMinutes: 95,

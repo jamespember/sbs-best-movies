@@ -3,6 +3,7 @@ const template = document.querySelector("#movie-template");
 const search = document.querySelector("#search");
 const rating = document.querySelector("#rating");
 const genre = document.querySelector("#genre");
+const language = document.querySelector("#language");
 const decade = document.querySelector("#decade");
 const runtime = document.querySelector("#runtime");
 const sort = document.querySelector("#sort");
@@ -45,11 +46,12 @@ function render() {
   const minimum = Number(rating.value);
   const maximumRuntime = Number(runtime.value) || Infinity;
   const filtered = movies.filter((movie) => {
-    const text = `${movie.title} ${movie.genres.join(" ")}`.toLowerCase();
+    const text = `${movie.title} ${movie.genres.join(" ")} ${(movie.languages ?? []).join(" ")}`.toLowerCase();
     const movieDecade = Math.floor(movie.year / 10) * 10;
     return (!query || text.includes(query))
       && (movie.userRating ?? 0) >= minimum
       && (!genre.value || movie.genres.includes(genre.value))
+      && (!language.value || movie.languages?.includes(language.value))
       && (!decade.value || movieDecade === Number(decade.value))
       && (!movie.runtimeMinutes || movie.runtimeMinutes <= maximumRuntime)
       && (!imdbTop.checked || movie.imdbTop100Rank2020 !== null);
@@ -86,6 +88,7 @@ function render() {
     fragment.querySelector(".meta").textContent = [
       movie.genres.slice(0, 3).join(" / "),
       formatRuntime(movie.runtimeMinutes),
+      movie.languages?.length ? `Languages ${movie.languages.join(" / ")}` : null,
       movie.criticScore !== null ? `Critics ${movie.criticScore}` : null,
     ]
       .filter(Boolean)
@@ -121,6 +124,7 @@ function showLuckyMovie() {
     movie.year,
     movie.genres.slice(0, 3).join(" / "),
     formatRuntime(movie.runtimeMinutes),
+    movie.languages?.length ? movie.languages.join(" / ") : null,
     formatExpiry(movie.sbsExpiresAt),
   ].filter(Boolean).join(" · ");
   luckyModal.querySelector(".modal-plot").textContent = movie.plot ?? "No synopsis available.";
@@ -137,11 +141,13 @@ function compareAudience(a, b) {
 
 function populateFilters() {
   const genres = [...new Set(movies.flatMap((movie) => movie.genres))].sort();
+  const languages = [...new Set(movies.flatMap((movie) => movie.languages ?? []))].sort();
   const decades = [...new Set(movies.map((movie) => Math.floor(movie.year / 10) * 10))]
     .filter(Number.isFinite)
     .sort((a, b) => b - a);
 
   for (const name of genres) genre.add(new Option(name, name));
+  for (const name of languages) language.add(new Option(name, name));
   for (const year of decades) decade.add(new Option(`${year}s`, String(year)));
 }
 
@@ -159,13 +165,14 @@ async function loadMovies() {
   render();
 }
 
-for (const control of [search, rating, genre, decade, runtime, sort, imdbTop]) {
+for (const control of [search, rating, genre, language, decade, runtime, sort, imdbTop]) {
   control.addEventListener(control === search ? "input" : "change", render);
 }
 reset.addEventListener("click", () => {
   search.value = "";
   rating.value = "0";
   genre.value = "";
+  language.value = "";
   decade.value = "";
   runtime.value = "";
   sort.value = "audience";

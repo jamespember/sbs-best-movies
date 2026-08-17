@@ -224,6 +224,7 @@ function toMovie(summary, details, imdbTop100 = new Map(), sbsItem = null) {
     sbsMediaId: sbsItem ? String(sbsItem.mpxMediaID) : null,
     sbsUrl: sbsItem ? getSbsUrl(sbsItem) : null,
     sbsExpiresAt: sbsItem?.availability?.end ?? null,
+    languages: sbsItem?.languages ?? [],
     userRating: details.user_rating ?? null,
     criticScore: details.critic_score ?? null,
     runtimeMinutes: details.runtime_minutes ?? null,
@@ -311,6 +312,7 @@ async function validateCachedCatalogAgainstSbs() {
       sbsMediaId: mediaId,
       sbsUrl: getSbsUrl(item),
       sbsExpiresAt: item.availability?.end ?? null,
+      languages: item.languages ?? [],
     }] : [];
   });
   catalog.sbsValidatedAt = new Date().toISOString();
