@@ -88,6 +88,7 @@ input:focus, select:focus { outline: 2px solid var(--acid); outline-offset: 3px;
 .year { color: var(--muted); font: 0.75rem "DM Mono", monospace; }
 .meta { margin: 0.65rem 0; color: var(--muted); font: 0.68rem "DM Mono", monospace; text-transform: uppercase; }
 .accolade { display: inline-block; margin: 0 0 0.8rem; padding: 0.35rem 0.5rem; border: 1px solid var(--ink); font: 0.6rem "DM Mono", monospace; text-transform: uppercase; }
+.accolade[hidden] { display: none; }
 .plot { max-width: 700px; margin: 0; line-height: 1.6; }
 .links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.9rem; }
 .links a { color: inherit; font-size: 0.78rem; font-weight: 700; text-underline-offset: 3px; }
