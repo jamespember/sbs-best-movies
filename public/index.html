@@ -22,9 +22,9 @@
           <label>
             <span>Minimum rating</span>
             <select id="rating">
-              <option value="0">All shortlisted</option>
+              <option value="0" selected>All shortlisted</option>
               <option value="6">6.0+</option>
-              <option value="7" selected>7.0+</option>
+              <option value="7">7.0+</option>
               <option value="8">8.0+</option>
             </select>
           </label>
@@ -58,6 +58,7 @@
               <option value="oldest">Oldest first</option>
               <option value="title">Title A–Z</option>
               <option value="runtime">Shortest first</option>
+              <option value="expiry">Leaving soon</option>
               <option value="imdb">IMDb rating · 2020</option>
             </select>
           </label>
@@ -110,6 +111,7 @@
             <span class="year"></span>
           </div>
           <p class="meta"></p>
+          <p class="expiry"></p>
           <p class="accolade" hidden></p>
           <p class="plot"></p>
           <div class="links">

@@ -26,6 +26,20 @@ function formatRuntime(minutes) {
   return hours ? `${hours}h ${remainder}m` : `${remainder}m`;
 }
 
+function formatExpiry(value) {
+  if (!value) return null;
+  const expiry = new Date(value);
+  const days = Math.max(0, Math.ceil((expiry.getTime() - Date.now()) / 86_400_000));
+  if (days === 0) return "Leaves today";
+  if (days === 1) return "Leaves tomorrow";
+  if (days <= 14) return `Leaves in ${days} days`;
+  return `Leaves ${expiry.toLocaleDateString("en-AU", {
+    day: "numeric",
+    month: "short",
+    year: expiry.getFullYear() === new Date().getFullYear() ? undefined : "numeric",
+  })}`;
+}
+
 function render() {
   const query = search.value.trim().toLowerCase();
   const minimum = Number(rating.value);
@@ -45,6 +59,9 @@ function render() {
     if (sort.value === "oldest") return (a.year ?? Infinity) - (b.year ?? Infinity) || compareAudience(a, b);
     if (sort.value === "title") return a.title.localeCompare(b.title);
     if (sort.value === "runtime") return (a.runtimeMinutes ?? Infinity) - (b.runtimeMinutes ?? Infinity) || compareAudience(a, b);
+    if (sort.value === "expiry") {
+      return (Date.parse(a.sbsExpiresAt) || Infinity) - (Date.parse(b.sbsExpiresAt) || Infinity) || compareAudience(a, b);
+    }
     if (sort.value === "imdb") return (b.imdbRating2020 ?? -1) - (a.imdbRating2020 ?? -1) || compareAudience(a, b);
     return compareAudience(a, b);
   });
@@ -73,6 +90,9 @@ function render() {
     ]
       .filter(Boolean)
       .join(" · ");
+    const expiry = fragment.querySelector(".expiry");
+    expiry.textContent = formatExpiry(movie.sbsExpiresAt) ?? "";
+    expiry.hidden = !movie.sbsExpiresAt;
     const imdb = fragment.querySelector(".imdb");
     if (movie.imdbId) imdb.href = `https://www.imdb.com/title/${movie.imdbId}/`;
     else imdb.remove();
@@ -101,6 +121,7 @@ function showLuckyMovie() {
     movie.year,
     movie.genres.slice(0, 3).join(" / "),
     formatRuntime(movie.runtimeMinutes),
+    formatExpiry(movie.sbsExpiresAt),
   ].filter(Boolean).join(" · ");
   luckyModal.querySelector(".modal-plot").textContent = movie.plot ?? "No synopsis available.";
   luckyModal.querySelector(".modal-watch").href = movie.sbsUrl;
@@ -143,7 +164,7 @@ for (const control of [search, rating, genre, decade, runtime, sort, imdbTop]) {
 }
 reset.addEventListener("click", () => {
   search.value = "";
-  rating.value = "7";
+  rating.value = "0";
   genre.value = "";
   decade.value = "";
   runtime.value = "";

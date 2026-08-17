@@ -18,6 +18,7 @@ test("toMovie maps ranking fields and preserves list fallbacks", () => {
       imdbVotes2020: null,
       sbsMediaId: null,
       sbsUrl: null,
+      sbsExpiresAt: null,
       userRating: 8.2,
       criticScore: 91,
       runtimeMinutes: 95,

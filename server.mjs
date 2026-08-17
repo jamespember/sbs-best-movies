@@ -223,6 +223,7 @@ function toMovie(summary, details, imdbTop100 = new Map(), sbsItem = null) {
     imdbVotes2020: imdbEntry?.votes ?? null,
     sbsMediaId: sbsItem ? String(sbsItem.mpxMediaID) : null,
     sbsUrl: sbsItem ? getSbsUrl(sbsItem) : null,
+    sbsExpiresAt: sbsItem?.availability?.end ?? null,
     userRating: details.user_rating ?? null,
     criticScore: details.critic_score ?? null,
     runtimeMinutes: details.runtime_minutes ?? null,
@@ -305,7 +306,12 @@ async function validateCachedCatalogAgainstSbs() {
   catalog.movies = catalog.movies.flatMap((movie) => {
     const mediaId = movie.sbsMediaId ?? getSbsMediaId(movie.sbsUrl);
     const item = sbsCatalog.get(mediaId);
-    return item ? [{ ...movie, sbsMediaId: mediaId, sbsUrl: getSbsUrl(item) }] : [];
+    return item ? [{
+      ...movie,
+      sbsMediaId: mediaId,
+      sbsUrl: getSbsUrl(item),
+      sbsExpiresAt: item.availability?.end ?? null,
+    }] : [];
   });
   catalog.sbsValidatedAt = new Date().toISOString();
   const tempFile = `${CACHE_FILE}.tmp`;
